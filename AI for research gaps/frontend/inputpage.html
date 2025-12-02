@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Analysis - LITSENZE</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-purple: #667eea;
+            --primary-dark: #764ba2;
+            --accent-blue: #4facfe;
+            --text-dark: #1a202c;
+            --text-gray: #4a5568;
+            --text-light: #718096;
+            --bg-light: #f7fafc;
+            --border-color: #e2e8f0;
+            --success-green: #48bb78;
+            --warning-orange: #ed8936;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            line-height: 1.6;
+            color: var(--text-dark);
+            background: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border-color);
+            z-index: 1000;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .nav-container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--text-dark);
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 1.8rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-gray);
+            font-size: 0.9rem;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--success-green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Main Layout */
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            height: calc(100vh - 73px);
+            margin-top: 73px;
+        }
+
+        /* Top Section - Three Column Layout */
+        .top-section {
+            display: flex;
+            flex: 1;
+            min-height: 0; /* This is the key fix! */
+        }
+
+        /* Left Panel - Summary */
+        .left-panel {
+            width: 25%;
+            background: white;
+            border-right: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .panel-header {
+            margin-bottom: 1.5rem;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .panel-icon {
+            font-size: 1.5rem;
+        }
+
+        .panel-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .summary-card {
+            background: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+        }
+
+        .summary-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-2px);
+        }
+
+        .summary-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-content {
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .summary-badge {
+            display: inline-block;
+            padding: 0.4rem 0.8rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            color: white;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-top: 0.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+        }
+
+        .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Center Panel - Chat */
+        .center-panel {
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            background: white;
+        }
+
+        .chat-header {
+            padding: 1.5rem 2rem;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.05), rgba(240, 147, 251, 0.05));
+        }
+
+        .chat-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.3rem;
+        }
+
+        .chat-subtitle {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .message {
+            display: flex;
+            gap: 1rem;
+            animation: fadeIn 0.3s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .message-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+        }
+
+        .user-avatar {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            color: white;
+        }
+
+        .bot-avatar {
+            background: linear-gradient(135deg, #48bb78, #38a169);
+            color: white;
+        }
+
+        .message-content {
+            flex: 1;
+        }
+
+        .message-text {
+            background: var(--bg-light);
+            padding: 1rem 1.25rem;
+            border-radius: 12px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            border: 1px solid var(--border-color);
+        }
+
+        .message.user .message-text {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            color: white;
+            border: none;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.4rem;
+            padding-left: 0.25rem;
+        }
+
+        .chat-input-container {
+            padding: 1.5rem 2rem;
+            border-top: 1px solid var(--border-color);
+            background: white;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 1rem 1.25rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 0.95rem;
+            font-family: inherit;
+            resize: none;
+            transition: all 0.3s;
+            max-height: 120px;
+            min-height: 52px;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary-purple);
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.08);
+        }
+
+/* Alternative: Adjust padding for better centering */
+.chat-input {
+    flex: 1;
+    padding: 15px 1.25rem; /* Increased from 1rem (16px) to 15px */
+    border: 2px solid var(--border-color);
+    border-radius: 12px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    resize: none;
+    transition: all 0.3s;
+    max-height: 120px;
+    min-height: 52px;
+    line-height: 1.5;
+}
+
+.chat-input::placeholder {
+    color: var(--text-light);
+    opacity: 1;
+    line-height: 1.5;
+}
+
+        .send-btn {
+            padding: 0.9rem 1.5rem;
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .send-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        /* Right Panel - Comparison */
+        .right-panel {
+            width: 25%;
+            background: white;
+            border-left: 1px solid var(--border-color);
+            overflow-y: auto;
+            padding: 2rem;
+        }
+
+        .comparison-card {
+            background: var(--bg-light);
+            padding: 1.25rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+        }
+
+        .comparison-field {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .comparison-content {
+            font-size: 0.9rem;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        .comparison-stats {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .stat-item {
+            flex: 1;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            margin-top: 0.25rem;
+        }
+
+/* Research Gaps Section */
+.gaps-section {
+    padding: 2rem;
+    background: white;
+    overflow-y: auto;
+    display: none;
+    border-top: 2px solid var(--border-color);
+    height: 0; /* Start with 0 height */
+    transition: height 0.3s ease; /* Smooth transition */
+}
+
+.gaps-section.active {
+    height: auto !important; /* CHANGED */
+    min-height: 300px !important;
+}
+
+
+.main-container.with-gaps .top-section {
+    flex: 1;
+    min-height: 0; /* Important for flexbox */
+}
+
+
+
+/* Adjust when gaps section is active */
+.main-container.with-gaps {
+    display: flex;
+    flex-direction: column;
+}
+
+.main-container.with-gaps .top-section {
+    flex: 1;
+    min-height: 0;
+    overflow: hidden; /* Prevent overflow */
+}
+
+.main-container.with-gaps .gaps-section {
+    flex-shrink: 0; /* Don't shrink */
+}
+
+        
+
+        .gaps-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .gaps-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .gaps-count {
+            background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark));
+            color: white;
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .gap-card {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .gap-card:hover {
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .gap-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .gap-number {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary-purple);
+            background: white;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+        }
+
+        .gap-priority {
+            font-size: 0.75rem;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .priority-high {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .priority-medium {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .priority-low {
+            background: #c6f6d5;
+            color: #2f855a;
+        }
+
+        .gap-title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .gap-description {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .gap-tags {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .gap-tag {
+            font-size: 0.8rem;
+            padding: 0.3rem 0.7rem;
+            background: white;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            color: var(--text-gray);
+        }
+
+        /* Scrollbar Styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--bg-light);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-color);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--text-light);
+        }
+
+        /* Responsive */
+        @media (max-width: 1200px) {
+            .left-panel, .right-panel {
+                width: 22%;
+            }
+            .center-panel {
+                width: 56%;
+            }
+        }
+
+        @media (max-width: 968px) {
+            .top-section {
+                flex-direction: column;
+                height: auto;
+            }
+            .left-panel, .center-panel, .right-panel {
+                width: 100%;
+                border: none;
+                border-bottom: 1px solid var(--border-color);
+            }
+            .center-panel {
+                min-height: 400px;
+            }
+        }
+
+        /* Loading Animation */
+        .typing-indicator {
+            display: flex;
+            gap: 0.4rem;
+            padding: 1rem 1.25rem;
+            background: var(--bg-light);
+            border-radius: 12px;
+            width: fit-content;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-light);
+            border-radius: 50%;
+            animation: typing 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-dot:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes typing {
+            0%, 60%, 100% {
+                transform: translateY(0);
+                opacity: 0.7;
+            }
+            30% {
+                transform: translateY(-10px);
+                opacity: 1;
+            }
+        }
+
+        /* FIX FOR FULL PAGE HEIGHT */
+        .main-container {
+            height: calc(100vh - 73px) !important;
+        }
+        
+        .top-section {
+            flex: 1 !important;
+            min-height: 0 !important;
+        }
+        
+        .gaps-section.active {
+            height: 40vh !important;
+            min-height: 300px !important;
+        }
+        
+        .left-panel, .center-panel, .right-panel {
+            height: 100% !important;
+            display: flex !important;
+            flex-direction: column !important;
+        }
+        
+        .summary-content, .comparison-content {
+            flex: 1 !important;
+            overflow-y: auto !important;
+        }
+        
+        .chat-messages {
+            flex: 1 !important;
+            overflow-y: auto !important;
+        }
+        
+        .gaps-content {
+            max-height: calc(40vh - 100px) !important;
+            overflow-y: auto !important;
+        }
+
+/* === ADD THIS CSS FOR 4-COLUMN LAYOUT === */
+/* Gaps Panel (4th column) */
+.gaps-panel {
+    width: 25%;
+    background: white;
+    border-left: 1px solid var(--border-color);
+    overflow-y: auto;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Update existing panel widths to make room for 4th column */
+.left-panel {
+    width: 20%; /* Changed from 25% */
+}
+
+.center-panel {
+    width: 35%; /* Changed from 50% */
+}
+
+.right-panel {
+    width: 20%; /* Changed from 25% */
+    border-right: 1px solid var(--border-color);
+}
+
+/* Hide the old gaps-section styles */
+.gaps-section {
+    display: none !important;
+}
+/* === END OF CSS TO ADD === */
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">⚡</span>
+                <span class="logo-text">LITSENZE</span>
+            </a>
+            <div class="nav-status">
+                <span class="status-dot"></span>
+                <span>AI Active</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Top Section: Three Column Layout -->
+        <div class="top-section">
+            <!-- Left Panel - Summary -->
+            <div class="left-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span class="panel-icon">📋</span>
+                    Query Summary
+                </h2>
+                <p class="panel-subtitle">Overview of your research queries</p>
+            </div>
+
+            <div id="summary-content">
+                <div class="empty-state">
+                    <div class="empty-icon">💭</div>
+                    <p>Start a conversation to see your query summary here</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center Panel - Chat -->
+        <div class="center-panel">
+            <div class="chat-header">
+                <h1 class="chat-title">Research Gap Analysis Assistant</h1>
+                <p class="chat-subtitle">Ask me about research gaps, trends, or specific topics in any field</p>
+            </div>
+
+            <div class="chat-messages" id="chat-messages">
+                <div class="message">
+                    <div class="message-avatar bot-avatar">AI</div>
+                    <div class="message-content">
+                        <div class="message-text">
+                            Hello! I'm your research assistant. I can help you discover research gaps, compare topics across different fields, and provide insights from millions of academic papers. What would you like to explore today?
+                        </div>
+                        <div class="message-time">Just now</div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="chat-input-container">
+                <div class="chat-input-wrapper">
+                    <textarea 
+                        id="chat-input" 
+                        class="chat-input" 
+                        placeholder="Ask about research gaps, trends, or specific topics..."
+                        rows="1"
+                    ></textarea>
+                    <button class="send-btn" id="send-btn">
+                        <span>Send</span>
+                        <span>→</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Comparison -->
+        <div class="right-panel">
+            <div class="panel-header">
+                <h2 class="panel-title">
+                    <span class="panel-icon">⚖️</span>
+                    Field Comparison
+                </h2>
+                <p class="panel-subtitle">Cross-disciplinary analysis</p>
+            </div>
+
+            <div id="comparison-content">
+                <div class="empty-state">
+                    <div class="empty-icon">🔬</div>
+                    <p>Field comparisons will appear here when you ask about a topic</p>
+                </div>
+            </div>
+        </div>
+
+<div class="gaps-panel" id="gaps-section">
+    <div class="panel-header">
+        <h2 class="panel-title">
+            <span class="panel-icon">💡</span>
+            Research Gaps
+        </h2>
+        <p class="panel-subtitle">Identified opportunities for new research</p>
+    </div>
+    <div id="gaps-content">
+        <div class="empty-state">
+            <div class="empty-icon">📊</div>
+            <p>Submit a query to see identified research gaps here</p>
+        </div>
+    </div>
+</div>
+        <!-- End of Top Section -->
+
+
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const chatInput = document.getElementById('chat-input');
+        const sendBtn = document.getElementById('send-btn');
+        const summaryContent = document.getElementById('summary-content');
+        const comparisonContent = document.getElementById('comparison-content');
+        const gapsSection = document.getElementById('gaps-section');
+        const gapsContent = document.getElementById('gaps-content');
+        const gapsCount = document.getElementById('gaps-count');
+
+        let queryCount = 0;
+        let queries = [];
+
+        // Auto-resize textarea
+        chatInput.addEventListener('input', function() {
+            this.style.height = 'auto';
+            this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+        });
+
+        // Send message on Enter (Shift+Enter for new line)
+        chatInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                sendMessage();
+            }
+        });
+
+        sendBtn.addEventListener('click', sendMessage);
+
+        async function sendMessage() {
+            const message = chatInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, 'user');
+            chatInput.value = '';
+            chatInput.style.height = 'auto';
+            sendBtn.disabled = true;
+
+            // Show typing indicator
+            showTyping();
+
+            try {
+                // Call backend API
+                const response = await fetch('/api/analyze', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ query: message })
+                });
+
+                const data = await response.json();
+                
+                removeTyping();
+                
+                if (data.success) {
+                    // Display AI response with actual analysis
+                    const aiResponse = `I've analyzed "${message}" and found ${data.analysis.total_papers_analyzed || 0} relevant papers. I've identified ${data.analysis.gaps_analysis?.gaps?.length || 0} key research gaps and trends in the field.`;
+                    addMessage(aiResponse, 'bot');
+                    
+                    // Update UI with actual data
+                    updateUIWithAnalysis(message, data.analysis);
+                } else {
+                    addMessage(`Sorry, I encountered an error analyzing your query. Please try again.`, 'bot');
+                    console.error('API Error:', data.error);
+                }
+            } catch (error) {
+                removeTyping();
+                addMessage(`Network error. Please check your connection and try again.`, 'bot');
+                console.error('Fetch Error:', error);
+            } finally {
+                sendBtn.disabled = false;
+            }
+        }
+
+        function addMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'message ' + sender;
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar ' + (sender === 'user' ? 'user-avatar' : 'bot-avatar');
+            avatar.textContent = sender === 'user' ? 'U' : 'AI';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const messageText = document.createElement('div');
+            messageText.className = 'message-text';
+            messageText.textContent = text;
+
+            const time = document.createElement('div');
+            time.className = 'message-time';
+            time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            content.appendChild(messageText);
+            content.appendChild(time);
+            messageDiv.appendChild(avatar);
+            messageDiv.appendChild(content);
+
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function showTyping() {
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message';
+            typingDiv.id = 'typing-indicator';
+            
+            const avatar = document.createElement('div');
+            avatar.className = 'message-avatar bot-avatar';
+            avatar.textContent = 'AI';
+
+            const content = document.createElement('div');
+            content.className = 'message-content';
+
+            const typing = document.createElement('div');
+            typing.className = 'typing-indicator';
+            typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+
+            content.appendChild(typing);
+            typingDiv.appendChild(avatar);
+            typingDiv.appendChild(content);
+
+            chatMessages.appendChild(typingDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function removeTyping() {
+            const typing = document.getElementById('typing-indicator');
+            if (typing) typing.remove();
+        }
+
+        function updateUIWithAnalysis(query, analysis) {
+            queryCount++;
+            queries.push({
+                id: queryCount,
+                text: query,
+                timestamp: new Date(),
+                analysis: analysis
+            });
+
+            // Update summary with actual data
+            updateSummary(query, analysis);
+
+            // Update comparison with actual data
+            updateComparison(query, analysis);
+
+            // Update research gaps with actual data
+            updateResearchGaps(query, analysis);
+        }
+
+        function updateSummary(query, analysis) {
+            summaryContent.innerHTML = '';
+
+            const card = document.createElement('div');
+            card.className = 'summary-card';
+            
+            const papersCount = analysis.total_papers_analyzed || 0;
+            const gapsCount = analysis.gaps_analysis?.gaps?.length || 0;
+            const keywords = analysis.trends?.top_keywords ? 
+                Object.keys(analysis.trends.top_keywords).slice(0, 5).join(', ') : 
+                'analysis, research, study';
+            
+            card.innerHTML = `
+                <div class="summary-label">Current Analysis</div>
+                <div class="summary-content">
+                    <strong>Query:</strong> ${query}<br><br>
+                    <strong>Papers Analyzed:</strong> ${papersCount}<br>
+                    <strong>Gaps Identified:</strong> ${gapsCount}<br>
+                    <strong>Top Keywords:</strong> ${keywords}
+                </div>
+                <span class="summary-badge">AI Analysis Complete</span>
+            `;
+            summaryContent.appendChild(card);
+
+            // Show previous queries (last 2)
+            const previousQueries = queries.slice(-3, -1).reverse();
+            previousQueries.forEach((q, index) => {
+                const prevCard = document.createElement('div');
+                prevCard.className = 'summary-card';
+                prevCard.innerHTML = `
+                    <div class="summary-label">Previous Query ${q.id}</div>
+                    <div class="summary-content">${q.text}</div>
+                    <span class="summary-badge">${q.analysis?.total_papers_analyzed || '--'} papers</span>
+                `;
+                summaryContent.appendChild(prevCard);
+            });
+        }
+
+        function updateComparison(query, analysis) {
+            comparisonContent.innerHTML = '';
+
+            const trends = analysis.trends || {};
+            const fields = analysis.trends?.fields || ['Computer Science', 'Engineering', 'Science'];
+            const citations = Math.floor(trends.average_citations || 45.5);
+            const sources = trends.sources || ['Research Database'];
+
+            sources.forEach((source, index) => {
+                const card = document.createElement('div');
+                card.className = 'comparison-card';
+                card.innerHTML = `
+                    <div class="comparison-field">${source}</div>
+                    <div class="comparison-content">
+                        Analysis from ${source} shows ${trends.total_papers || 0} papers on "${query}" with an average of ${citations} citations per paper.
+                    </div>
+                    <div class="comparison-stats">
+                        <div class="stat-item">
+                            <div class="stat-value">${trends.total_papers || 0}</div>
+                            <div class="stat-label">Papers</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-value">${citations}</div>
+                            <div class="stat-label">Avg Citations</div>
+                        </div>
+                    </div>
+                `;
+                comparisonContent.appendChild(card);
+            });
+
+            // If no sources, show default
+            if (sources.length === 0) {
+                comparisonContent.innerHTML = `
+                    <div class="comparison-card">
+                        <div class="comparison-field">Analysis Results</div>
+                        <div class="comparison-content">
+                            Analyzed ${trends.total_papers || 0} papers across multiple databases.
+                        </div>
+                        <div class="comparison-stats">
+                            <div class="stat-item">
+                                <div class="stat-value">${trends.total_papers || 0}</div>
+                                <div class="stat-label">Papers</div>
+                            </div>
+                            <div class="stat-item">
+                                <div class="stat-value">${citations}</div>
+                                <div class="stat-label">Avg Citations</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+function updateResearchGaps(query, analysis) {
+    // Get the correct gaps content div (in gaps-panel)
+    const gapsContent = document.querySelector('.gaps-panel #gaps-content');
+    
+    const gaps = analysis.gaps_analysis?.gaps || [];
+    const directions = analysis.gaps_analysis?.directions || [];
+    const impactAreas = analysis.gaps_analysis?.impact_areas || [];
+
+    if (!gapsContent) return;
+
+    gapsContent.innerHTML = '';
+    
+    // Update the panel title with count
+    const gapsTitle = document.querySelector('.gaps-panel .panel-title');
+    if (gapsTitle) {
+        // Remove any existing count
+        const existingCount = gapsTitle.querySelector('.gaps-count');
+        if (existingCount) existingCount.remove();
+        
+        // Add new count
+        const gapCountSpan = document.createElement('span');
+        gapCountSpan.className = 'gaps-count';
+        gapCountSpan.textContent = `${gaps.length} Found`;
+        gapCountSpan.style.marginLeft = '10px';
+        gapCountSpan.style.fontSize = '0.8rem';
+        gapCountSpan.style.background = 'linear-gradient(135deg, var(--primary-purple), var(--primary-dark))';
+        gapCountSpan.style.color = 'white';
+        gapCountSpan.style.padding = '2px 8px';
+        gapCountSpan.style.borderRadius = '10px';
+        gapsTitle.appendChild(gapCountSpan);
+    }
+
+    if (gaps.length === 0) {
+        gapsContent.innerHTML = `
+            <div class="empty-state">
+                <div class="empty-icon">📊</div>
+                <p>No gaps identified for this query</p>
+            </div>
+        `;
+        return;
+    }
+
+    gaps.forEach((gap, index) => {
+        const priority = index === 0 ? 'high' : (index < 3 ? 'medium' : 'low');
+        const relatedDirection = directions[index] || "Further investigation needed";
+        const relatedImpact = impactAreas[index] || "General research area";
+        
+        const card = document.createElement('div');
+        card.className = 'gap-card';
+        card.innerHTML = `
+            <div class="gap-header">
+                <span class="gap-number">Gap #${index + 1}</span>
+                <span class="gap-priority priority-${priority}">${priority.toUpperCase()}</span>
+            </div>
+            <div class="gap-title">${gap}</div>
+            <div class="gap-description">
+                <strong>Suggested Direction:</strong> ${relatedDirection}<br>
+                <strong>Potential Impact:</strong> ${relatedImpact}
+            </div>
+            <div class="gap-tags">
+                <span class="gap-tag">Research Gap</span>
+                <span class="gap-tag">Priority: ${priority}</span>
+                <span class="gap-tag">Field: ${query}</span>
+            </div>
+        `;
+        gapsContent.appendChild(card);
+    });
+}
+
+
+    </script>
+</body>
+</html>
+
